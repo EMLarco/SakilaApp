@@ -13,7 +13,7 @@ Aplicación web para la gestión de una tienda de alquiler de películas. Permit
 
 ## Requisitos previos
 - Visual Studio 2022 o superior
-- .NET SDK 8.0
+- .NET SDK 10.0
 - SQL Server (instancia `DESKTOP-8O8V3AI\MSSQLSERVER01` o ajustar cadena de conexión)
 - SQL Server Management Studio (SSMS) opcional
 
