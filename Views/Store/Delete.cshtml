@@ -1,0 +1,11 @@
+﻿@model SakilaApp.Models.Store
+@{
+    ViewData["Title"] = "Eliminar tienda";
+}
+<h1>Eliminar tienda</h1>
+<h3>¿Está seguro de eliminar la tienda con ID @Model.StoreId?</h3>
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="StoreId" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

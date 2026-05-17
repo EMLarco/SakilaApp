@@ -1,0 +1,16 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SakilaApp.Models;
+
+public class Rental
+{
+    public int RentalId { get; set; }
+    public DateTime RentalDate { get; set; }
+    public int InventoryId { get; set; }
+    public int CustomerId { get; set; }
+    public DateTime? ReturnDate { get; set; }
+    public DateTime LastUpdate { get; set; }
+
+    // Propiedad para eliminación lógica (soft delete)
+    public bool IsDeleted { get; set; } = false;
+}

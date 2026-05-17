@@ -1,0 +1,14 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SakilaApp.Models;
+
+public class Inventory
+{
+    public int InventoryId { get; set; }
+    public int FilmId { get; set; }
+    public int StoreId { get; set; }
+    public DateTime LastUpdate { get; set; }
+
+    // Propiedad para eliminación lógica (soft delete)
+    public bool IsDeleted { get; set; } = false;
+}

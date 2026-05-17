@@ -1,0 +1,43 @@
+﻿@model IEnumerable<SakilaApp.Models.Rental>
+@{
+    ViewData["Title"] = "Alquileres";
+}
+<h1>Alquileres</h1>
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Crear nuevo
+        alquiler
+    </a>
+</p>
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Fecha alquiler</th>
+            <th>Inventario ID</th>
+            <th>Cliente ID</th>
+            <th>Fecha devolución</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.RentalId</td>
+                <td>@item.RentalDate</td>
+                <td>@item.InventoryId</td>
+                <td>@item.CustomerId</td>
+                <td>@(item.ReturnDate?.ToString() ?? "Pendiente")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.RentalId"
+                       class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-action="Edit" asp-route-id="@item.RentalId"
+                       class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.RentalId"
+                       class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
