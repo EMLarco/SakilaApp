@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Administrator Dashboard";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                Administrator Area
+            </div>
+            <div class="card-body p-4">
+                <p class="mb-0">
+                    This page is protected with <code>[Authorize(Roles = "Administrator")]</code>.
+                    It demonstrates role-based access for administrators only.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

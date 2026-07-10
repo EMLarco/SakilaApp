@@ -1,0 +1,53 @@
+@model IEnumerable<SakilaApp.Models.Customer>
+@{
+    ViewData["Title"] = $"Reto 10: Clientes con apellido que contiene \"{ViewBag.Patron}\"";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="bi bi-people"></i> @ViewData["Title"]</h1>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="patron" class="form-control" placeholder="Ingrese patrón a buscar" value="@ViewBag.Patron" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Buscar</button>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="Reto10ClientesApellido" asp-route-patron="son" class="btn btn-secondary">Ejemplo: "son"</a>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Dirección</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(m => item.CustomerId)</td>
+                        <td>@Html.DisplayFor(m => item.FirstName)</td>
+                        <td>@Html.DisplayFor(m => item.LastName)</td>
+                        <td>@Html.DisplayFor(m => item.Email)</td>
+                        <td>@(item.Address?.Address1)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> No se encontraron clientes con "<strong>@ViewBag.Patron</strong>" en el apellido.
+        </div>
+    }
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary mt-3"><i class="bi bi-arrow-left"></i> Volver</a>
+</div>

@@ -1,27 +1,54 @@
-﻿@model SakilaApp.Models.Film
+@model SakilaApp.Models.Film
+
 @{
-    ViewData["Title"] = "Detalles de la película";
+    ViewData["Title"] = "Detalles de la Película";
 }
-<h1>@Model.Title</h1>
-<dl class="row">
-    <dt class="col-sm-2">ID</dt>
-    <dd class="col-sm-10">@Model.FilmId</dd>
-    <dt class="col-sm-2">Título</dt>
-    <dd class="col-sm-10">@Model.Title</dd>
-    <dt class="col-sm-2">Descripción</dt>
-    <dd class="col-sm-10">@Model.Description</dd>
-    <dt class="col-sm-2">Año</dt>
-    <dd class="col-sm-10">@Model.ReleaseYear</dd>
-    <dt class="col-sm-2">Duración alquiler</dt>
-    <dd class="col-sm-10">@Model.RentalDuration días</dd>
-    <dt class="col-sm-2">Tarifa</dt>
-    <dd class="col-sm-10">$@Model.RentalRate</dd>
-    <dt class="col-sm-2">Duración (min)</dt>
-    <dd class="col-sm-10">@(Model.Length ?? 0)</dd>
-    <dt class="col-sm-2">Costo reemplazo</dt>
-    <dd class="col-sm-10">$@Model.ReplacementCost</dd>
-    <dt class="col-sm-2">Clasificación</dt>
-    <dd class="col-sm-10">@Model.Rating</dd>
-</dl>
-<a asp-action="Edit" asp-route-id="@Model.FilmId" class="btn btnwarning">Editar</a>
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="bi bi-info-circle-fill"></i> @ViewData["Title"]</h1>
+
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <i class="bi bi-film"></i> Información completa
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Título</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+
+                <dt class="col-sm-3">Descripción</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-3">Año</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ReleaseYear)</dd>
+
+                <dt class="col-sm-3">Idioma</dt>
+                <dd class="col-sm-9">@(Model.Language?.Name ?? "No especificado")</dd>
+
+                <dt class="col-sm-3">Duración</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Length) minutos</dd>
+
+                <dt class="col-sm-3">Tarifa alquiler</dt>
+                <dd class="col-sm-9">$@Html.DisplayFor(model => model.RentalRate)</dd>
+
+                <dt class="col-sm-3">Costo reemplazo</dt>
+                <dd class="col-sm-9">$@Html.DisplayFor(model => model.ReplacementCost)</dd>
+
+                <dt class="col-sm-3">Características</dt>
+                <dd class="col-sm-9">@(Model.SpecialFeatures != null ? string.Join(", ", Model.SpecialFeatures) : "Ninguna")</dd>
+
+                <dt class="col-sm-3">Última actualización</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastUpdate)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model?.FilmId" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a la lista
+        </a>
+    </div>
+</div>

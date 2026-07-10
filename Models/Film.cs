@@ -1,25 +1,44 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using NpgsqlTypes;
 
 namespace SakilaApp.Models;
 
-public class Film
+public partial class Film
 {
     public int FilmId { get; set; }
-    public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
-    public string ReleaseYear { get; set; } = string.Empty;
-    public byte RentalDuration { get; set; }
+
+    public string Title { get; set; } = null!;
+
+    public string? Description { get; set; }
+
+    public int? ReleaseYear { get; set; }
+
+    public int LanguageId { get; set; }
+
+    public int? OriginalLanguageId { get; set; }
+
+    public short RentalDuration { get; set; }
+
     public decimal RentalRate { get; set; }
+
     public short? Length { get; set; }
+
     public decimal ReplacementCost { get; set; }
-    public string Rating { get; set; } = string.Empty;
-    public byte LanguageId { get; set; }
-    public byte? OriginalLanguageId { get; set; }
+
     public DateTime LastUpdate { get; set; }
 
-    // Relación muchos a muchos con Actor a través de FilmActor
+    public List<string>? SpecialFeatures { get; set; }
+
+    public NpgsqlTsVector Fulltext { get; set; } = null!;
+
     public virtual ICollection<FilmActor> FilmActors { get; set; } = new List<FilmActor>();
 
-    // Propiedad para eliminación lógica (soft delete)
-    public bool IsDeleted { get; set; } = false;
+    public virtual ICollection<FilmCategory> FilmCategories { get; set; } = new List<FilmCategory>();
+
+    public virtual ICollection<Inventory> Inventories { get; set; } = new List<Inventory>();
+
+    public virtual Language Language { get; set; } = null!;
+
+    public virtual Language? OriginalLanguage { get; set; }
 }

@@ -1,59 +1,92 @@
-﻿@model SakilaApp.Models.Film
+@model SakilaApp.Models.Film
+
 @{
-    ViewData["Title"] = "Crear película";
+    ViewData["Title"] = "Nueva Película";
 }
-<h1>Crear película</h1>
-<form asp-action="Create">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="bi bi-plus-circle"></i> @ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Title" class="form-label">Título</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Descripción</label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="ReleaseYear" class="form-label">Año</label>
+                        <input asp-for="ReleaseYear" class="form-control" />
+                        <span asp-validation-for="ReleaseYear" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="LanguageId" class="form-label">Idioma</label>
+                        <select asp-for="LanguageId" class="form-select" asp-items="ViewBag.LanguageId"></select>
+                        <span asp-validation-for="LanguageId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="OriginalLanguageId" class="form-label">Idioma original</label>
+                        <select asp-for="OriginalLanguageId" class="form-select" asp-items="ViewBag.OriginalLanguageId">
+                            <option value="">-- Sin seleccionar --</option>
+                        </select>
+                        <span asp-validation-for="OriginalLanguageId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="RentalDuration" class="form-label">Duración alquiler (días)</label>
+                        <input asp-for="RentalDuration" class="form-control" />
+                        <span asp-validation-for="RentalDuration" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="RentalRate" class="form-label">Tarifa</label>
+                        <input asp-for="RentalRate" class="form-control" />
+                        <span asp-validation-for="RentalRate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="Length" class="form-label">Duración (min)</label>
+                        <input asp-for="Length" class="form-control" />
+                        <span asp-validation-for="Length" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="ReplacementCost" class="form-label">Costo reemplazo</label>
+                        <input asp-for="ReplacementCost" class="form-control" />
+                        <span asp-validation-for="ReplacementCost" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Características especiales</label>
+                    <input asp-for="SpecialFeatures" class="form-control" />
+                    <span asp-validation-for="SpecialFeatures" class="text-danger"></span>
+                    <small class="text-muted">Separar por comas</small>
+                </div>
+
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> Guardar
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="ReleaseYear" class="form-label"></label>
-        <input asp-for="ReleaseYear" class="form-control" />
-        <span asp-validation-for="ReleaseYear" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="RentalDuration" class="form-label"></label>
-        <input asp-for="RentalDuration" class="form-control" />
-        <span asp-validation-for="RentalDuration" class="textdanger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="RentalRate" class="form-label"></label>
-        <input asp-for="RentalRate" class="form-control" />
-        <span asp-validation-for="RentalRate" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Length" class="form-label"></label>
-        <input asp-for="Length" class="form-control" />
-        <span asp-validation-for="Length" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="ReplacementCost" class="form-label"></label>
-        <input asp-for="ReplacementCost" class="form-control" />
-        <span asp-validation-for="ReplacementCost" class="textdanger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Rating" class="form-label"></label>
-        <select asp-for="Rating" class="form-select">
-            <option>G</option>
-            <option>PG</option>
-            <option>PG-13</option>
-            <option>R</option>
-            <option>NC-17</option>
-        </select>
-        <span asp-validation-for="Rating" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-success">Guardar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+</div>
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

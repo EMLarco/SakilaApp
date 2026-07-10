@@ -1,51 +1,85 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using SakilaApp.Models;
+using SakilaApp.Data;
 using SakilaApp.Services;
-using static System.Collections.Specialized.BitVector32;
-var builder = WebApplication.CreateBuilder(args);
-// Agregar servicios MVC
-builder.Services.AddControllersWithViews();
-// Agregar servicios de Razor Pages (necesario para MapRazorPages)
-builder.Services.AddRazorPages();
-// Configurar DbContext con SQL Server
-builder.Services.AddDbContext<SakilaContext>(options =>
+using SakilaApp.Settings;
 
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-// Configurar Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = false;
-    options.Password.RequireDigit = true;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-})
-.AddEntityFrameworkStores<SakilaContext>()
-.AddDefaultTokenProviders();
-// Configurar cookies de autenticación
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = "/Account/Login";
-    options.LogoutPath = "/Account/Logout";
-    options.AccessDeniedPath = "/Account/AccessDenied";
-});
-// Registrar servicio de email
-builder.Services.AddTransient<IEmailSender, ConsoleEmailSender>();
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
+
+// DbContext para Sakila (Database First)
+builder.Services.AddDbContext<SakilaContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// DbContext para Identity (puede usar la misma base de datos o una distinta)
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Identity con roles (UN SOLO BLOQUE)
+builder.Services
+    .AddDefaultIdentity<IdentityUser>(options =>
+    {
+        options.SignIn.RequireConfirmedAccount = true;
+        options.Password.RequireDigit = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireLowercase = true;
+        options.Password.RequiredLength = 6;
+    })
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+
+builder.Services.AddTransient<IEmailSender, GmailEmailSender>();
+
+builder.Services
+    .AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+    });
+
+// (Opcional) Agrega autenticación con Google si tienes las claves en appsettings.json
+// builder.Services.AddAuthentication()
+//     .AddGoogle(options =>
+//     {
+//         options.ClientId = builder.Configuration["Authentication:Google:ClientId"]!;
+//         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
+//     });
+
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthentication();
+
+app.UseAuthentication();   // ← Importante: va antes de Authorization
 app.UseAuthorization();
+
 app.MapControllerRoute(
- name: "default",
- pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();       // Necesario para las páginas de Identity (Login, Register, etc.)
+
+// ==================================================
+// EJECUTAR EL SEEDER DE ROLES Y USUARIO ADMIN
+// ==================================================
+using (var scope = app.Services.CreateScope())
+{
+    await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+}
+
 app.Run();

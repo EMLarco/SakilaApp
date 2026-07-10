@@ -1,17 +1,36 @@
-﻿@model SakilaApp.Models.Actor
+@model SakilaApp.Models.Actor
+
 @{
-    ViewData["Title"] = "Detalles del actor";
+    ViewData["Title"] = "Detalles del Actor";
 }
-<h1>@Model.FirstName @Model.LastName</h1>
-<dl class="row">
-    <dt class="col-sm-2">ID</dt>
-    <dd class="col-sm-10">@Model.ActorId</dd>
-    <dt class="col-sm-2">Nombre</dt>
-    <dd class="col-sm-10">@Model.FirstName</dd>
-    <dt class="col-sm-2">Apellido</dt>
-    <dd class="col-sm-10">@Model.LastName</dd>
-    <dt class="col-sm-2">Última actualización</dt>
-    <dd class="col-sm-10">@Model.LastUpdate</dd>
-</dl>
-<a asp-action="Edit" asp-route-id="@Model.ActorId" class="btn btnwarning">Editar</a>
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="bi bi-person-lines-fill"></i> @ViewData["Title"]</h1>
+
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <i class="bi bi-info-circle"></i> Información completa
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FirstName)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LastName)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastName)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LastUpdate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastUpdate)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model?.ActorId" class="btn btn-warning">
+            <i class="bi bi-pencil"></i> Editar
+        </a>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Volver a la lista
+        </a>
+    </div>
+</div>

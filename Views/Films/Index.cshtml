@@ -1,40 +1,85 @@
-﻿@model IEnumerable<SakilaApp.Models.Film>
+@model IEnumerable<SakilaApp.Models.Film>
+
 @{
-    ViewData["Title"] = "Películas";
+    ViewData["Title"] = "Lista de Películas";
 }
-<h1>Películas</h1>
-<p><a asp-action="Create" class="btn btn-primary">Crear nueva</a></p>
-<table class="table table-striped table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Año</th>
-            <th>Duración</th>
-            <th>Tarifa</th>
-            <th>Clasificación</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.FilmId</td>
-                <td>@item.Title</td>
-                <td>@item.ReleaseYear</td>
-                <td>@(item.Length ?? 0) min</td>
-                <td>$@item.RentalRate</td>
-                <td>@item.Rating</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.FilmId"
-                       class="btn btn-info btn-sm">Detalles</a>
-                    <a asp-action="Edit" asp-route-id="@item.FilmId"
-                       class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@item.FilmId"
-                       class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-film"></i> @ViewData["Title"]</h1>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Crear nueva película
+        </a>
+    </div>
+
+    <!-- Formulario de búsqueda y filtro -->
+    <form method="get" asp-action="Index" class="row g-3 mb-4">
+        <div class="col-md-5">
+            <input type="text" name="buscar" class="form-control" placeholder="Buscar por título..." value="@ViewBag.Buscar" />
+        </div>
+        <div class="col-md-3">
+            <input type="number" name="duracionMinima" class="form-control" placeholder="Duración mínima (min)" value="@ViewBag.DuracionMinima" />
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search"></i> Buscar</button>
+        </div>
+        <div class="col-md-2">
+            <a asp-action="Index" class="btn btn-secondary w-100"><i class="bi bi-x-circle"></i> Limpiar</a>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Año</th>
+                    <th>Duración (min)</th>
+                    <th>Tarifa</th>
+                    <th>Idioma</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                        <td>@(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ReleaseYear)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Length)</td>
+                        <td>@Html.DisplayFor(modelItem => item.RentalRate)</td>
+                        <td>@(item.Language?.Name ?? "Sin idioma")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.FilmId" class="btn btn-sm btn-warning" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.FilmId" class="btn btn-sm btn-info text-white" title="Detalles">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.FilmId" class="btn btn-sm btn-danger" title="Eliminar">
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Paginación -->
+    @if (ViewBag.TotalPaginas > 1)
+    {
+        <nav aria-label="Navegación de páginas">
+            <ul class="pagination justify-content-center">
+                @for (int i = 1; i <= ViewBag.TotalPaginas; i++)
+                {
+                    <li class="page-item @(i == ViewBag.PaginaActual ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-pagina="@i" asp-route-buscar="@ViewBag.Buscar" asp-route-duracionMinima="@ViewBag.DuracionMinima">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+</div>

@@ -1,11 +1,41 @@
-﻿@model SakilaApp.Models.Actor
+@model SakilaApp.Models.Actor
+
 @{
-    ViewData["Title"] = "Eliminar actor";
+    ViewData["Title"] = "Eliminar Actor";
 }
-<h1>Eliminar actor</h1>
-<h3>¿Está seguro de eliminar a @Model.FirstName @Model.LastName?</h3>
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="ActorId" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="bi bi-trash3"></i> @ViewData["Title"]</h1>
+
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle-fill"></i> ¿Estás seguro de que quieres eliminar este actor?
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <i class="bi bi-person-badge"></i> Datos del actor
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FirstName)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.FirstName)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LastName)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastName)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LastUpdate)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastUpdate)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" class="mt-4">
+        <input type="hidden" asp-for="ActorId" />
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-check-lg"></i> Sí, eliminar
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-x-lg"></i> Cancelar
+        </a>
+    </form>
+</div>

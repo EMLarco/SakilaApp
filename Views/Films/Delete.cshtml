@@ -1,11 +1,50 @@
-﻿@model SakilaApp.Models.Film
+@model SakilaApp.Models.Film
+
 @{
-    ViewData["Title"] = "Eliminar película";
+    ViewData["Title"] = "Eliminar Película";
 }
-<h1>Eliminar película</h1>
-<h3>¿Está seguro de eliminar "@Model.Title"?</h3>
-<form asp-action="Delete" method="post">
-    <input type="hidden" asp-for="FilmId" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+
+<div class="container mt-4">
+    <h1 class="mb-4"><i class="bi bi-trash3"></i> @ViewData["Title"]</h1>
+
+    <div class="alert alert-warning">
+        <i class="bi bi-exclamation-triangle-fill"></i> ¿Estás seguro de que quieres eliminar esta película?
+    </div>
+
+    <div class="card">
+        <div class="card-header bg-danger text-white">
+            <i class="bi bi-film"></i> Datos de la película
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Título</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Title)</dd>
+
+                <dt class="col-sm-3">Descripción</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-3">Año</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ReleaseYear)</dd>
+
+                <dt class="col-sm-3">Duración</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Length) min</dd>
+
+                <dt class="col-sm-3">Tarifa</dt>
+                <dd class="col-sm-9">$@Html.DisplayFor(model => model.RentalRate)</dd>
+
+                <dt class="col-sm-3">Última actualización</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.LastUpdate)</dd>
+            </dl>
+        </div>
+    </div>
+
+    <form asp-action="Delete" class="mt-4">
+        <input type="hidden" asp-for="FilmId" />
+        <button type="submit" class="btn btn-danger">
+            <i class="bi bi-check-lg"></i> Sí, eliminar
+        </button>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="bi bi-x-lg"></i> Cancelar
+        </a>
+    </form>
+</div>

@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
 
 namespace SakilaApp.Models;
 
-public class Category
+public partial class Category
 {
-    public byte CategoryId { get; set; } // tinyint
-    public string Name { get; set; } = string.Empty;
-    public DateTime LastUpdate { get; set; } = DateTime.Now;
+    public int CategoryId { get; set; }
 
-    // Propiedad para eliminación lógica (soft delete)
-    public bool IsDeleted { get; set; } = false;
+    public string Name { get; set; } = null!;
+
+    public DateTime LastUpdate { get; set; }
+
+    public virtual ICollection<FilmCategory> FilmCategories { get; set; } = new List<FilmCategory>();
 }

@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Employee Dashboard";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-primary shadow-sm">
+            <div class="card-header bg-primary text-white">
+                Employee Area
+            </div>
+            <div class="card-body p-4">
+                <p class="mb-0">
+                    This page is protected with <code>[Authorize(Roles = "Employee,Administrator")]</code>.
+                    It demonstrates a second permission level for employees.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
